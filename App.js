@@ -1,15 +1,44 @@
-import { View, Text } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { KeyboardAvoidingView } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Provider } from "react-redux";
+import Home from "./screens/Home";
+import Map from "./screens/Map";
+import store from "./store";
 
-export default function App() {
+const App = () => {
+  const Stack = createNativeStackNavigator();
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Universal React with Expo</Text>
-    </View>
+    <Provider store={store}>
+      <NavigationContainer>
+        <SafeAreaProvider>
+          <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={Platform.OS === "ios" ? -64 : 0}
+          >
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Home"
+                component={Home}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="Map"
+                component={Map}
+                options={{
+                  headerShown: false,
+                }}
+              />
+            </Stack.Navigator>
+          </KeyboardAvoidingView>
+        </SafeAreaProvider>
+      </NavigationContainer>
+    </Provider>
   );
-}
+};
+export default App;
